@@ -35,7 +35,7 @@ CHECKS = {
         "warn": ["yes"]
     },
     "Protocol": {
-        # Protocol is deprecated; only "2" is acceptable historically.
+       
         "good": ["2"],
         "warn": ["1", "1,2"]
     }
@@ -47,16 +47,16 @@ def parse_sshd_config(text):
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        # split key value (first token is key)
+      
         parts = re.split(r"\s+", line, maxsplit=1)
         if len(parts) == 1:
             key, val = parts[0], ""
         else:
             key, val = parts
-        # normalize key
+       
         key = key.strip()
         val = val.strip()
-        # Preserve last occurrence (sshd uses last)
+       
         cfg[key] = val
     return cfg
 
@@ -118,7 +118,7 @@ def main():
     print("-"*50)
     print(f"Summary: OK={ok_count}  WARN={warn_count}  MISSING={missing_count}\n")
 
-    # Extra: try to check if sshd is running and its version (best-effort, non-invasive)
+    
     try:
         import subprocess
         p = subprocess.run(["sshd", "-T"], capture_output=True, text=True, timeout=3)
@@ -129,7 +129,7 @@ def main():
                 if any(k.lower() in line for k in ["permitrootlogin", "passwordauthentication", "pubkeyauthentication", "x11forwarding"]):
                     print("  " + line)
         else:
-            # maybe sshd not in PATH or needs root; ignore silently
+            
             pass
     except Exception:
         pass
